@@ -10,14 +10,14 @@ import Foundation
 
 //view
 protocol PresenterToView: class {
-    // Presenter calls -> View listens
-    func showSmth()
+    // Presenter calls View listens
+    func showMessage(withText: String)
 }
 
 //presenter
 protocol ViewToPresenter: class {
-    // View calls -> Presenter listens
-
+    // View calls Presenter listens
+    
     var view: PresenterToView? { get set }
     var interactor: PresenterToInteractor? { get set }
     var router: PresenterToRouter? { get set }
@@ -28,21 +28,21 @@ protocol ViewToPresenter: class {
 
 //presenter
 protocol InteractorToPresenter: class {
-    //Interactor calls - > Presenter listens
-    func fetchSuccess()
-    func fetchFails()
+    //Interactor calls Presenter listens
+    func fetchSuccess(message: String)
+    func fetchFails(error: String)
 }
 
 //interactor
 protocol PresenterToInteractor: class {
-    // Presenter calls -> Interactor listens
+    // Presenter calls Interactor listens
     var presenter: InteractorToPresenter? { get set }
     func giveMeData()
 }
 
 //router
 protocol PresenterToRouter: class {
-    //Presenter calls - > Router listens
+    //Presenter calls Router listens
     func showVC(view: PresenterToView?)
 }
 

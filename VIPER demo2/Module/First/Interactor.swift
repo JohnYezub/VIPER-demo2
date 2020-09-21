@@ -8,14 +8,25 @@
 
 import Foundation
 
+///Presenter calls Interactor listens
 class Interactor: PresenterToInteractor {
     
+    ///Intercator calls Presenter listens
     weak var presenter: InteractorToPresenter?
     
     func giveMeData() {
         print("Interactor was asked to \(#function)")
-        presenter?.fetchSuccess()
-       // presenter?.fetchFails()
+        let network = NetworkService()
+        network.getData { (data) in
+            if data != nil {
+                print(data!)
+                let decoded = network.decodeData(type: SunModel.self, data: data!)
+                DataStorage.shared.data = decoded
+                self.presenter?.fetchSuccess(message: "I've got some data")
+            } else {
+                self.presenter?.fetchFails(error: "Sorry, no data")
+            }
+        }
     }
-                
+    
 }

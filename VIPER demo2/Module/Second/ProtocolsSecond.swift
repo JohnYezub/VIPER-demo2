@@ -12,6 +12,9 @@ import Foundation
 protocol PresenterToViewSecond: class {
     // Presenter calls -> View listens
     func showSmth()
+    func updateDayLenght(string: String)
+    func updateSunrise(string: String)
+    func updateSunset(string: String)
 }
 
 //presenter
@@ -41,6 +44,6 @@ protocol PresenterToRouterSecond: class {
 //presenter
 protocol InteractorToPresenterSecond: class {
     //Interactor calls - > Presenter listens
-    func fetchSuccess()
+    func fetchSuccess(dayLenght: Int, sunrise: String, sunset: String)
     func fetchFails()
 }

@@ -17,6 +17,7 @@ class PresenterSecond: ViewToPresenterSecond {
     
     func viewDidLoad() {
         view?.showSmth()
+        interactor?.giveMeData()
     }
     
     deinit {
@@ -26,12 +27,19 @@ class PresenterSecond: ViewToPresenterSecond {
 }
 
 extension PresenterSecond: InteractorToPresenterSecond {
-    func fetchSuccess() {
+    func fetchSuccess(dayLenght: Int, sunrise: String, sunset: String) {
         
+        let sunriseText = DateConverter.convertISOtoString(string: sunrise)
+        let sunsetText = DateConverter.convertISOtoString(string: sunset)
+        let dayLenghtText = DateConverter.convertSecondsToString(value: dayLenght)
+        
+        view?.updateDayLenght(string: dayLenghtText)
+        view?.updateSunrise(string: sunriseText)
+        view?.updateSunset(string: sunsetText)
     }
     
     func fetchFails() {
-        
+       //do nothing
     }
     
     

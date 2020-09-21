@@ -8,17 +8,15 @@
 
 import Foundation
 
-
-
+///View calls Presenter listens
 class Presenter: ViewToPresenter {
-   
+    
+    ///Presenter listeners
     weak var view: PresenterToView?
-    
     var interactor: PresenterToInteractor?
-    
     var router: PresenterToRouter?
     
- //view delegates
+    //view delegates
     func viewDidLoad() {
         print(#function)
         interactor?.giveMeData()
@@ -26,18 +24,21 @@ class Presenter: ViewToPresenter {
     }
     func openSecond() {
         router?.showVC(view: view)
-       }
-     
-}
-
-extension Presenter: InteractorToPresenter {
-    //Interactor delegates
-    func fetchSuccess() {
-        print("Interactor \(#function)")
-        view?.showSmth()
     }
     
-    func fetchFails() {
+}
+
+///Interactor calls Presenter listens
+extension Presenter: InteractorToPresenter {
+    
+    //Interactor delegates
+    func fetchSuccess(message: String) {
         print("Interactor \(#function)")
+        view?.showMessage(withText: message)
+    }
+    
+    func fetchFails(error: String) {
+        print("Interactor \(#function)")
+        view?.showMessage(withText: error)
     }
 }

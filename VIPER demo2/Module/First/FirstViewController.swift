@@ -8,33 +8,55 @@
 
 import UIKit
 
-class FirstViewController: UIViewController, PresenterToView {
-            
+
+class FirstViewController: UIViewController {
+    
     var presenter: ViewToPresenter?
+    
+    var button: UIButton!
+    var label: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
         view.backgroundColor = .systemPink
         presenter?.viewDidLoad()
-        
-        let button = UIButton()
-        button.setTitle("Show Second", for: .normal)
+    }
+    
+    private func setupUI() {
+        button = UIButton()
+        button.setTitle("Show me", for: .normal)
+        button.isHidden = true
         button.addTarget(self, action: #selector(buttonClick(_:)), for: .touchUpInside)
         view.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
+        label = UILabel()
+        label.font = UIFont(name: "Helvetica", size: 18)
+        label.textColor = .darkGray
+        label.textAlignment = .center
+        view.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        label.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20).isActive = true
     }
     
-    @objc func buttonClick(_ sender: UIButton) {
+    @objc private func buttonClick(_ sender: UIButton) {
         presenter?.openSecond()
     }
-
-    //MARK: Delegate: PresenterToView
-    func showSmth() {
+}
+//MARK: Delegate: PresenterToView
+extension FirstViewController: PresenterToView {
+    func showMessage(withText: String) {
         print("ViewController \(#function)")
+        DispatchQueue.main.async {
+            self.label.text = withText
+            self.button.isHidden = false
+        }
+        
     }
-
 }
 
