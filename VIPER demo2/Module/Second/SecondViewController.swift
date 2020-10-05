@@ -31,7 +31,7 @@ class SecondViewController: UIViewController {
     }
     
     private func setupUI() {
-        self.view.backgroundColor = .orange
+        self.view.backgroundColor = #colorLiteral(red: 0.9888154623, green: 0.9012486312, blue: 1, alpha: 1)
         
         dayLenghtValueLabel = UILabel()
         dayLenghtValueLabel.text = "--"

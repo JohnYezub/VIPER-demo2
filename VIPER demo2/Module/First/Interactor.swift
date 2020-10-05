@@ -16,16 +16,24 @@ class Interactor: PresenterToInteractor {
     
     func giveMeData() {
         print("Interactor was asked to \(#function)")
-        let network = NetworkService()
-        network.getData { (data) in
-            if data != nil {
-                print(data!)
-                let decoded = network.decodeData(type: SunModel.self, data: data!)
-                DataStorage.shared.data = decoded
-                self.presenter?.fetchSuccess(message: "I've got some data")
-            } else {
-                self.presenter?.fetchFails(error: "Sorry, no data")
+        
+        NetworkService.getData { result in
+            
+            switch result {
+            case .success(let data):
+                if data != nil {
+                    print(data!)
+                    let decoded = NetworkService.decodeData(type: SunModel.self, data: data!)
+                    DataStorage.shared.data = decoded
+                    self.presenter?.fetchSuccess(message: "I've got some data")
+                } else {
+                    self.presenter?.fetchFails(error: "Sorry, no data")
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
+            
+        
         }
     }
     

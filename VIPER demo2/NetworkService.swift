@@ -10,9 +10,19 @@ import Foundation
 
 ///class created by Interactor to get network data
 
+enum NetworkError: Error {
+    case someError
+    case networkError
+}
+
+//enum Result<Value, Error: Swift.Error> {
+//    case success(Value)
+//    case failure(Error)
+//}
+
 class NetworkService {
     
-    func getData(completion: @escaping (Data?) -> Void) {
+    static func getData(completion: @escaping (Result<Data?, NetworkError>) -> Void) {
         //let date = "2020-09-21"
         let date = DateConverter.giveTodayDate()
         let urlString = "https://api.sunrise-sunset.org/json?lat=-8.5&lng=115&date=\(date)&formatted=0"
@@ -20,13 +30,15 @@ class NetworkService {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error == nil {
-              completion(data)
+                completion(.success(data))
+            } else {
+                completion(.failure(.someError))
             }
         }
         task.resume()
     }
     
-    func decodeData<T: Decodable>(type: T.Type, data: Data?) -> T? {        
+    static func decodeData<T: Decodable>(type: T.Type, data: Data?) -> T? {        
         guard let data = data else { return nil }
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
