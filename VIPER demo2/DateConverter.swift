@@ -15,7 +15,7 @@ class DateConverter {
         df.dateFormat = "YYYY-MM-dd"
         return df.string(from: date)
     }
-    
+
     ///from 2015-05-21T19:22:59+00:00 to HH:mm
     static func convertISOtoString(string: String) -> String {
         let isoDf = ISO8601DateFormatter()
@@ -25,10 +25,10 @@ class DateConverter {
         df.dateStyle = .none
         df.timeStyle = .short
         df.timeZone = TimeZone(secondsFromGMT: 28800)
-        
+
         return df.string(from: date!)
     }
-    
+
     static func convertSecondsToString(value: Int) -> String {
         let z = value
         let hh = Int(z / 3600)
@@ -38,9 +38,8 @@ class DateConverter {
         if mm < 10 {
             return "\(hh):0\(mm):\(ss)"
         } else {
-           return "\(hh):\(mm):\(ss)"
+            return "\(hh):\(mm):\(ss)"
         }
-        
     }
 }
 

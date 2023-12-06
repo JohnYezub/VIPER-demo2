@@ -8,35 +8,35 @@
 
 import Foundation
 
-///View calls Presenter listens
-class Presenter: ViewToPresenter {
-    
+/// View calls Presenter listens
+class Presenter: PresenterProtocol {
+
     ///Presenter listeners
-    weak var view: PresenterToView?
+    weak var view: ViewProtocol?
     var interactor: PresenterToInteractor?
     var router: PresenterToRouter?
-    
+
     //view delegates
     func viewDidLoad() {
         print(#function)
-        interactor?.giveMeData()
-        
+        interactor?.fetchData()
+
     }
     func openSecond() {
         router?.showVC(view: view)
     }
-    
+
 }
 
-///Interactor calls Presenter listens
+/// Interactor calls Presenter listens
 extension Presenter: InteractorToPresenter {
-    
+
     //Interactor delegates
     func fetchSuccess(message: String) {
         print("Interactor \(#function)")
         view?.showMessage(withText: message)
     }
-    
+
     func fetchFails(error: String) {
         print("Interactor \(#function)")
         view?.showMessage(withText: error)

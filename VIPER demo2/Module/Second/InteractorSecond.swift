@@ -12,7 +12,10 @@ class InteractorSecond: PresenterToInteractorSecond {
     weak var presenter: InteractorToPresenterSecond?
     
     func giveMeData() {
-        guard let data = DataStorage.shared.data else { presenter?.fetchFails(); return }
+        guard let data = DataStorage.shared.data else {
+            presenter?.fetchFails()
+            return
+        }
         let dayLength = data.results.dayLength
         let sunrise = data.results.sunrise
         let sunset = data.results.sunset

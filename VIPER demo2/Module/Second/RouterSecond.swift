@@ -10,27 +10,25 @@ import Foundation
 import UIKit
 
 class RouterSecond: PresenterToRouterSecond {
-    
+
     static func createModule() -> UIViewController {
-        
         let viewController = SecondViewController()
-        
+
         let presenter = PresenterSecond()
         let interactor = InteractorSecond()
         let router = RouterSecond()
-        
-        ///strong
+
+        /// strong
         viewController.presenter = presenter
-        ///weak
+        /// weak
         presenter.view = viewController
-        ///strong
+        /// strong
         presenter.router = router
-        ///strong
+        /// strong
         presenter.interactor = interactor
-        ///weak
+        /// weak
         interactor.presenter = presenter
-        
-        
+
         return viewController
     }
     deinit {

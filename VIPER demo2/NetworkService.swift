@@ -15,35 +15,41 @@ enum NetworkError: Error {
     case networkError
 }
 
-//enum Result<Value, Error: Swift.Error> {
-//    case success(Value)
-//    case failure(Error)
-//}
-
 class NetworkService {
-    
-    static func getData(completion: @escaping (Result<Data?, NetworkError>) -> Void) {
+    private var queue = DispatchQueue(label: "network", qos: .utility)
+
+    init() {
+
+    }
+
+    func getData(completion: @escaping (Result<Data, Error>) -> Void) {
         //let date = "2020-09-21"
         let date = DateConverter.giveTodayDate()
-        let urlString = "https://api.sunrise-sunset.org/json?lat=-8.5&lng=115&date=\(date)&formatted=0"
+        let urlString = "\(baseUrlString)/json?lat=-8.5&lng=115&date=\(date)&formatted=0"
         guard let url = URL(string: urlString) else { return }
-        
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if error == nil {
-                completion(.success(data))
-            } else {
-                completion(.failure(.someError))
+
+        let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            self?.queue.async {
+                if let error = error {
+                    completion(.failure(error))
+                }
+                if let data = data {
+                    completion(.success(data))
+                }
             }
         }
         task.resume()
     }
-    
-    static func decodeData<T: Decodable>(type: T.Type, data: Data?) -> T? {        
+
+}
+
+class DecodeNetworkData {
+    class func decodeData<T: Decodable>(type: T.Type, data: Data?) -> T? {
         guard let data = data else { return nil }
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         do {
-        let result = try decoder.decode(T.self, from: data)
+            let result = try decoder.decode(T.self, from: data)
             return result
         } catch let error {
             print(error)
@@ -51,5 +57,5 @@ class NetworkService {
             return nil
         }
     }
-    
+
 }

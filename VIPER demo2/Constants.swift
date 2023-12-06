@@ -6,7 +6,4 @@
 //  Copyright © 2020 Evgeny Ezub. All rights reserved.
 //
 
-import Foundation
-
-let API: String = "https://api.myjson.com/bins/1bsqcn/"
-
+let baseUrlString = "https://api.sunrise-sunset.org"

@@ -8,25 +8,29 @@
 
 import Foundation
 
-///singleton to store data from network
-///init by Interactor
-///set data by Interactor
+/// Singleton to store  and pass data from network
+/// Init by Interactor
+/// Set data by Interactor
 class DataStorage {
-    
+
     static let shared = DataStorage()
-    
-    var data: SunModel? {
+
+    private(set) var data: SunModel? {
         didSet {
             print("data didSet in DataStorage")
         }
     }
-    
+
     private init() {
         print("DataStorage init")
     }
-    
+
+    func storeData(_ data: SunModel?) {
+        self.data = data
+    }
+
     deinit {
         print("DataStorage deinit")
     }
-    
+
 }

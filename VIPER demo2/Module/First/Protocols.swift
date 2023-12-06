@@ -9,16 +9,17 @@
 import Foundation
 
 //view
-protocol PresenterToView: class {
+protocol ViewProtocol: AnyObject {
     // Presenter calls View listens
     func showMessage(withText: String)
 }
 
 //presenter
-protocol ViewToPresenter: class {
+
+protocol PresenterProtocol: AnyObject {
     // View calls Presenter listens
     
-    var view: PresenterToView? { get set }
+    var view: ViewProtocol? { get set }
     var interactor: PresenterToInteractor? { get set }
     var router: PresenterToRouter? { get set }
     
@@ -27,23 +28,16 @@ protocol ViewToPresenter: class {
 }
 
 //presenter
-protocol InteractorToPresenter: class {
+protocol InteractorToPresenter: AnyObject {
     //Interactor calls Presenter listens
     func fetchSuccess(message: String)
     func fetchFails(error: String)
 }
 
 //interactor
-protocol PresenterToInteractor: class {
+protocol PresenterToInteractor: AnyObject {
     // Presenter calls Interactor listens
     var presenter: InteractorToPresenter? { get set }
-    func giveMeData()
+    func fetchData()
 }
-
-//router
-protocol PresenterToRouter: class {
-    //Presenter calls Router listens
-    func showVC(view: PresenterToView?)
-}
-
 

@@ -10,19 +10,19 @@ import UIKit
 
 
 class FirstViewController: UIViewController {
-    
-    var presenter: ViewToPresenter?
-    
+
+    var presenter: PresenterProtocol?
+
     var button: UIButton!
     var label: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         presenter?.viewDidLoad()
     }
-    
+
     private func setupUI() {
         button = UIButton()
         button.setTitle("Show me", for: .normal)
@@ -32,7 +32,7 @@ class FirstViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
+
         label = UILabel()
         label.font = UIFont(name: "Helvetica", size: 18)
         label.textColor = .darkGray
@@ -43,20 +43,21 @@ class FirstViewController: UIViewController {
         label.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         label.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20).isActive = true
     }
-    
+
     @objc private func buttonClick(_ sender: UIButton) {
         presenter?.openSecond()
     }
 }
+
 //MARK: Delegate: PresenterToView
-extension FirstViewController: PresenterToView {
+extension FirstViewController: ViewProtocol {
     func showMessage(withText: String) {
         print("ViewController \(#function)")
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.label.text = withText
             self.button.isHidden = false
         }
-        
+
     }
 }
 

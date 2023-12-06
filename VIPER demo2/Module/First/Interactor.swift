@@ -10,31 +10,26 @@ import Foundation
 
 ///Presenter calls Interactor listens
 class Interactor: PresenterToInteractor {
-    
+
     ///Intercator calls Presenter listens
     weak var presenter: InteractorToPresenter?
-    
-    func giveMeData() {
+
+    private let networkService = NetworkService()
+
+    func fetchData() {
         print("Interactor was asked to \(#function)")
-        
-        NetworkService.getData { result in
-            
+
+        networkService.getData { [weak self] result in
             switch result {
             case .success(let data):
-                if data != nil {
-                    print(data!)
-                    let decoded = NetworkService.decodeData(type: SunModel.self, data: data!)
-                    DataStorage.shared.data = decoded
-                    self.presenter?.fetchSuccess(message: "I've got some data")
-                } else {
-                    self.presenter?.fetchFails(error: "Sorry, no data")
-                }
+                print(data)
+                let decoded = DecodeNetworkData.decodeData(type: SunModel.self, data: data)
+                DataStorage.shared.storeData(decoded)
+                self?.presenter?.fetchSuccess(message: "I've got some data")
             case .failure(let error):
                 print(error.localizedDescription)
             }
-            
-        
         }
     }
-    
+
 }

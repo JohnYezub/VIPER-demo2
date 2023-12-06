@@ -9,7 +9,7 @@
 import Foundation
 
 //view
-protocol PresenterToViewSecond: class {
+protocol PresenterToViewSecond: AnyObject {
     // Presenter calls -> View listens
     func showSmth()
     func updateDayLenght(string: String)
@@ -18,7 +18,7 @@ protocol PresenterToViewSecond: class {
 }
 
 //presenter
-protocol ViewToPresenterSecond: class {
+protocol ViewToPresenterSecond: AnyObject {
     // View calls -> Presenter listens
 
     var view: PresenterToViewSecond? { get set }
@@ -30,19 +30,19 @@ protocol ViewToPresenterSecond: class {
 }
 
 //interactor
-protocol PresenterToInteractorSecond: class {
+protocol PresenterToInteractorSecond: AnyObject {
     // Presenter calls -> Interactor listens
     var presenter: InteractorToPresenterSecond? { get set }
     func giveMeData()
 }
 
 //router
-protocol PresenterToRouterSecond: class {
+protocol PresenterToRouterSecond: AnyObject {
     //Presenter calls - > Router listens
 }
 
 //presenter
-protocol InteractorToPresenterSecond: class {
+protocol InteractorToPresenterSecond: AnyObject {
     //Interactor calls - > Presenter listens
     func fetchSuccess(dayLenght: Int, sunrise: String, sunset: String)
     func fetchFails()
